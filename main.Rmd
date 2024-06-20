@@ -9,7 +9,6 @@ urlcolor: blue
 ---
 
 ```{r setup, include=FALSE}
-library(reticulate)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -58,11 +57,13 @@ With this, you can use the `np` object to access `numpy` functions and methods j
 array <- np$array(c(1, 2, 3, 4, 5))
 print(array)
 ```
+
 ## Running Python Code in R
 Sometimes, it might be useful to execute Python code directly within an R script, and this can be easily done using the `py_run_string` function. This function allows you to run Python code as a string:
 ```{r}
 py_run_string("print('Hello from Python')")
 ```
+
 Alternatively, it may be more convenient to directly execute a Python script file. For this, you can use the `py_run_file` function:
 ```{r}
 # py_run_file("path/to/your_script.py")
@@ -82,6 +83,7 @@ my_list[1] <- 4
 print(my_list)
 
 ```
+
 You can also access Python functions and call them from R:
 ```{r}
 py_run_string("
@@ -94,6 +96,25 @@ print(greet("World"))
 print(greet("James"))
 ```
 
+
+
+# Data Manipulation
+## Using Python Libraries Like NumPy and pandas
+You can use Python libraries like NumPy and pandas for data manipulation in R:
+```{r}
+# Import NumPy and pandas
+np <- import("numpy")
+pd <- import("pandas")
+
+# Create a numpy array
+array <- np$array(c(1, 2, 3, 4, 5))
+print(array)
+
+# Create a pandas array
+py_df <- pd$DataFrame(dict(a=np$array(c(1, 2, 3)), b=np$array(c('x', 'y', 'z'))))
+print(py_df)
+```
+
 ## Converting Data Types Between R and Python   
 It is important to know that the `reticulate` package automatically converts many data types between R and Python. For example, **R vectors become Python lists**, and **R data frames become pandas data frames**. 
 
@@ -104,13 +125,11 @@ You can manually convert data types using specific functions if needed:
 # Define data frame
 df <- data.frame(a = 1:3, b = c('x', 'y', 'z')) 
 
-# Import pandas
-pd <- import("pandas")
-
 # Convert R data frame to pandas data frame
 py_df <- r_to_py(df)
 print(py_df)
 ```
+
 2. To convert a pandas data frame back to an R data frame:
 ```{r}
 # Convert pandas data frame to R data frame
@@ -118,14 +137,176 @@ r_df <- py_to_r(py_df)
 print(r_df)
 ```
 
-# Data Manipulation
-## Using Python Libraries Like NumPy and pandas
-## Combining R and Python for Data Analysis
 
-
-# Machine Learning
-## Integrating with Python Machine Learning Libraries
 
 # Visualization
 ## Using Python Visualization Libraries
-## Combining R and Python Visualizations in a Single Report
+Sometimes, you might have more experience plotting in Python than in R. Thanks to this package, Python libraries like Matplotlib and Seaborn can be used:
+```{r}
+# Import libraries
+plt <- import("matplotlib.pyplot")
+sns <- import("seaborn")
+
+# Create a plot using Matplotlib
+plt$plot(c(1, 2, 3), c(4, 5, 6))
+plt$show()
+
+# Create a plot using Seaborn
+sns$set_theme()
+df <- sns$load_dataset("iris")
+sns$scatterplot(data=df, x="sepal_length", y="sepal_width", hue="species")
+plt$show()
+```
+
+
+
+# Machine Learning
+## Using Scikit-Learn for Classification
+```{r}
+# Import scikit-learn
+sklearn <- import("sklearn")
+datasets <- sklearn$datasets
+svm <- sklearn$svm
+metrics <- sklearn$metrics
+
+# Load dataset and train a model
+iris <- datasets$load_iris()
+X <- iris$data
+y <- iris$target
+model <- svm$SVC()
+model$fit(X, y)
+
+# Make predictions
+predictions <- model$predict(X)
+
+# Evaluate the model
+accuracy <- metrics$accuracy_score(y, predictions)
+print(paste("Accuracy:", accuracy))
+```
+
+## Building and Evaluating a Regression Model
+```{r}
+# Import necessary libraries
+sklearn <- import("sklearn")
+datasets <- sklearn$datasets
+linear_model <- sklearn$linear_model
+metrics <- sklearn$metrics
+
+# Load the diabetes dataset
+diabetes <- datasets$load_diabetes()
+X <- diabetes$data
+y <- diabetes$target
+
+# Split the data into training and testing sections
+library(zeallot)
+train_test_split <- sklearn$model_selection$train_test_split
+c(X_train, X_test, y_train, y_test) %<-% train_test_split(X, y, test_size = 0.2)
+
+# Train a linear regression model
+model <- linear_model$LinearRegression()
+model$fit(X_train, y_train)
+
+# Make predictions
+predictions <- model$predict(X_test)
+
+# Evaluate the model
+mse <- metrics$mean_squared_error(y_test, predictions)
+print(paste("Mean Squared Error:", mse))
+```
+
+## Using TensorFlow for Deep Learning
+```{r}
+# Import TensorFlow
+tf <- import("tensorflow")
+keras <- import("keras")
+
+# Load and preprocess data
+mnist_data <- keras$datasets$mnist$load_data()
+train_images <- mnist_data[[1]][[1]]
+train_labels <- mnist_data[[1]][[2]]
+test_images <- mnist_data[[2]][[1]]
+test_labels <- mnist_data[[2]][[2]]
+train_images <- train_images/255
+test_images <- test_images/255
+
+# Ensure the input shape is specified correctly as an integer tuple
+input_shape <- as.integer(c(28, 28))
+
+# Build the model
+model <- keras$Sequential()
+model$add(keras$layers$Flatten(input_shape = input_shape))
+model$add(keras$layers$Dense(128, activation = "relu"))
+model$add(keras$layers$Dense(10, activation = "softmax"))
+
+# Compile the model
+model$compile(optimizer = "adam", loss = "sparse_categorical_crossentropy", metrics = "accuracy")
+
+# Train the model
+model$fit(train_images, train_labels, epochs = as.integer(5))
+
+# Evaluate the model
+metrics <- model$evaluate(test_images, test_labels)
+test_loss <- metrics[[1]]
+test_acc <- metrics[[2]]
+print(paste("Test accuracy:", test_acc))
+```
+
+
+
+# Reinforcement Learning 
+## Using OpenAI Gym for Reinforcement Learning
+```{r}
+# Import necessary libraries
+gym <- import("gym")
+np <- import("numpy")
+
+# Create the environment
+env <- gym$make("CartPole-v1")
+
+# Define the number of episodes and the maximum number of steps per episode
+num_episodes <- 50
+max_steps <- 100
+
+# Initialize a list to store total rewards per episode
+total_rewards <- numeric(num_episodes)
+
+# Run episodes
+for (episode in 1:num_episodes) {
+  state <- env$reset()
+  total_reward <- 0
+  
+  for (step in 1:max_steps) {
+    # Take a random action
+    action <- env$action_space$sample()
+    
+    # Perform the action in the environment
+    result <- env$step(action)
+    new_state <- result[[1]]
+    reward <- result[[2]]
+    done <- result[[3]]
+    
+    # Accumulate the reward
+    total_reward <- total_reward + reward
+    
+    # Update the state
+    state <- new_state
+    
+    # Break the loop if the episode is finished
+    if (done) {
+      break
+    }
+  }
+  total_rewards[episode] <- total_reward
+  print(paste("Episode:", episode, "Total Reward:", total_reward))
+}
+env$close()
+
+# Plot the total rewards per episode
+library(ggplot2)
+df <- data.frame(episode = 1:num_episodes, total_reward = total_rewards)
+ggplot(df, aes(x = episode, y = total_reward)) +
+  geom_line() +
+  labs(title = "Total Reward per Episode",
+       x = "Episode",
+       y = "Total Reward")
+```
