@@ -58,7 +58,17 @@ With this, you can use the `np` object to access `numpy` functions and methods j
 array <- np$array(c(1, 2, 3, 4, 5))
 print(array)
 ```
+## Running Python Code in R
+Sometimes, it might be useful to execute Python code directly within an R script, and this can be easily done using the `py_run_string` function. This function allows you to run Python code as a string:
+```{r}
+py_run_string("print('Hello from Python')")
+```
+Alternatively, it may be more convenient to directly execute a Python script file. For this, you can use the `py_run_file` function:
+```{r}
+# py_run_file("path/to/your_script.py")
+py_run_file("test.py")
+```
 
-
-
+## Accessing Python Objects in R
+## Converting Data Types Between R and Python   
 
