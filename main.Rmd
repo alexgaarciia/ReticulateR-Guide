@@ -1,0 +1,52 @@
+---
+title: "A Comprehensive Guide to Combining R and Python with `reticulate`"
+author: "Alejandro Leonardo García Navarro"
+date: "2024-06-20"
+output: 
+  pdf_document:
+    toc: true
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+library(reticulate)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+## What is `reticulate`?
+The `reticulate` package is a tool that allows to combine R and Python. It allows users to call Python from R and R from Python, combining the strengths of both programming languages in a single workflow.
+
+With this library, you can import any Python module and access its functions, classes, and objects from R, enabling a more versatile and flexible approach to data analysis, machine learning, and statistical computing.
+
+## Benefits of combining R and Python
+Combining R and Python brings together the best of both worlds:
+
+1. Choose the best tool for each task by leveraging R's statistical analysis and Python's programming and machine learning strengths.
+2. Access more libraries and packages from both ecosystems.
+3. Easy transfer of data between R and Python for flexible data handling in complex analysis pipelines.
+
+## Prerequisites and installation
+Before using the library, make sure you have the following prerequisites:
+
+1. R Installation: Make sure you have R installed on your system. You can download it from  [CRAN](https://cran.r-project.org/).
+2. Python Installation: [Install Python](https://www.python.org/downloads/) on your system.
+3. RStudio (Optional but recommended): Using RStudio as your IDE can simplify the process of using `reticulate`. Download RStudio from [here](https://posit.co/download/rstudio-desktop/).
+
+Once you have completed all the prerequisites, it is time to install the package. Use the following command in your R console:
+```{r warning=FALSE}
+install.packages("reticulate")
+```
+
+After installation, load the package using:
+```{r}
+library(reticulate)
+```
+
+
+
+# Basic Usage
+
+
+
+
