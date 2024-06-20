@@ -46,6 +46,18 @@ library(reticulate)
 
 
 # Basic Usage
+## Importing Python Modules
+To import a Python module in R using the `reticulate` package, you use the `import` function. For example, to import the `numpy` library, you can use:
+```{r}
+np <- import("numpy")
+```
+
+With this, you can use the `np` object to access `numpy` functions and methods just as you would in Python:
+```{r}
+# Create a numpy array
+array <- np$array(c(1, 2, 3, 4, 5))
+print(array)
+```
 
 
 
