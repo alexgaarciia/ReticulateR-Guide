@@ -70,5 +70,29 @@ py_run_file("test.py")
 ```
 
 ## Accessing Python Objects in R
+In the same way, you can access and manipulate Python objects in R. For example, if you create a Python list, you can access it in R:
+```{r}
+# You can access a Python list
+py_run_string("my_list = [1, 2, 3, 4, 5]")
+my_list <- py$my_list
+print(my_list)
+
+# You can also manipulate the list
+my_list[1] <- 4
+print(my_list)
+
+```
+You can also access Python functions and call them from R:
+```{r}
+py_run_string("
+def greet(name):
+  return 'Hello, ' + name + '!'
+")
+
+greet <- py$greet
+print(greet("World"))
+print(greet("James"))
+```
+
 ## Converting Data Types Between R and Python   
 
