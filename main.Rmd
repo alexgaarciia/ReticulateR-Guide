@@ -33,7 +33,7 @@ Before using the library, make sure you have the following prerequisites:
 3. RStudio (Optional but recommended): Using RStudio as your IDE can simplify the process of using `reticulate`. Download RStudio from [here](https://posit.co/download/rstudio-desktop/).
 
 Once you have completed all the prerequisites, it is time to install the package. Use the following command in your R console:
-```{r eval=FALSE}
+```{r}
 if (!require("reticulate")) install.packages("reticulate")
 ```
 
