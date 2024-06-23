@@ -33,9 +33,8 @@ Before using the library, make sure you have the following prerequisites:
 3. RStudio (Optional but recommended): Using RStudio as your IDE can simplify the process of using `reticulate`. Download RStudio from [here](https://posit.co/download/rstudio-desktop/).
 
 Once you have completed all the prerequisites, it is time to install the package. Use the following command in your R console:
-```{r message=FALSE, warning=FALSE}
-options(repos = "https://cloud.r-project.org")
-install.packages("reticulate")
+```{r eval=FALSE}
+if (!require("reticulate")) install.packages("reticulate")
 ```
 
 After installation, load the package using:
@@ -217,7 +216,7 @@ print(paste("Mean Squared Error:", mse))
 
 ## Using TensorFlow for Deep Learning
 ```{r}
-# Import TensorFlow
+# Import TensorFlow and Keras to create and tranii the neural network
 tf <- import("tensorflow")
 keras <- import("keras")
 
@@ -227,19 +226,22 @@ train_images <- mnist_data[[1]][[1]]
 train_labels <- mnist_data[[1]][[2]]
 test_images <- mnist_data[[2]][[1]]
 test_labels <- mnist_data[[2]][[2]]
+
+# Normalize pixel values
 train_images <- train_images/255
 test_images <- test_images/255
 
-# Ensure the input shape is specified correctly as an integer tuple
-input_shape <- as.integer(c(28, 28))
-
 # Build the model
-model <- keras$Sequential()
-model$add(keras$layers$Flatten(input_shape = input_shape))
+  # Allows stacking layers linearly
+model <- keras$Sequential() 
+  # Flatten layer that reshapes each 28x28 image into a 1D of 784 elements (28x28)
+model$add(keras$layers$Flatten(input_shape = as.integer(c(28, 28))))
+  # Dense layer with 128 units and ReLU activation function
 model$add(keras$layers$Dense(128, activation = "relu"))
-model$add(keras$layers$Dense(10, activation = "softmax"))
+  # Dense layer with 10 units and softmax activation function, used for multi-class classifcation 
+model$add(keras$layers$Dense(10, activation = "softmax")) 
 
-# Compile the model
+# Compile the model (prepare it for training)
 model$compile(optimizer = "adam", loss = "sparse_categorical_crossentropy", metrics = "accuracy")
 
 # Train the model
