@@ -28,12 +28,13 @@ Combining R and Python brings together the best of both worlds:
 ## Prerequisites and installation
 Before using the library, make sure you have the following prerequisites:
 
-1. R Installation: Make sure you have R installed on your system. You can download it from  [CRAN](https://cran.r-project.org/).
+1. R Installation: [Install R](https://cran.r-project.org/) on your system.
 2. Python Installation: [Install Python](https://www.python.org/downloads/) on your system.
 3. RStudio (Optional but recommended): Using RStudio as your IDE can simplify the process of using `reticulate`. Download RStudio from [here](https://posit.co/download/rstudio-desktop/).
 
 Once you have completed all the prerequisites, it is time to install the package. Use the following command in your R console:
-```{r warning=FALSE}
+```{r message=FALSE, warning=FALSE}
+options(repos = "https://cloud.r-project.org")
 install.packages("reticulate")
 ```
 
@@ -78,13 +79,13 @@ py_run_string("my_list = [1, 2, 3, 4, 5]")
 my_list <- py$my_list
 print(my_list)
 
-# You can also manipulate the list
+# You can manipulate the list
 my_list[1] <- 4
 print(my_list)
 
 ```
 
-You can also access Python functions and call them from R:
+It is also possible to define functions and call them from R:
 ```{r}
 py_run_string("
 def greet(name):
@@ -110,7 +111,7 @@ pd <- import("pandas")
 array <- np$array(c(1, 2, 3, 4, 5))
 print(array)
 
-# Create a pandas array
+# Create a pandas data frame
 py_df <- pd$DataFrame(dict(a=np$array(c(1, 2, 3)), b=np$array(c('x', 'y', 'z'))))
 print(py_df)
 ```
@@ -242,10 +243,10 @@ model$add(keras$layers$Dense(10, activation = "softmax"))
 model$compile(optimizer = "adam", loss = "sparse_categorical_crossentropy", metrics = "accuracy")
 
 # Train the model
-model$fit(train_images, train_labels, epochs = as.integer(5))
+model$fit(train_images, train_labels, epochs = as.integer(5), verbose = 0)
 
 # Evaluate the model
-metrics <- model$evaluate(test_images, test_labels)
+metrics <- model$evaluate(test_images, test_labels, verbose = 0)
 test_loss <- metrics[[1]]
 test_acc <- metrics[[2]]
 print(paste("Test accuracy:", test_acc))
