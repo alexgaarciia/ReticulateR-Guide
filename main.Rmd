@@ -1,7 +1,7 @@
 ---
 title: "A Comprehensive Guide to Combining R and Python with `reticulate`"
 author: "Alejandro Leonardo García Navarro"
-date: "2024-06-20"
+date: "2024-07-10"
 output: 
   pdf_document:
     toc: true
@@ -13,45 +13,53 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Introduction
+
 ## What is `reticulate`?
+
 The `reticulate` package is a tool that allows to combine R and Python. It allows users to call Python from R and R from Python, combining the strengths of both programming languages in a single workflow.
 
 With this library, you can import any Python module and access its functions, classes, and objects from R, enabling a more versatile and flexible approach to data analysis, machine learning, and statistical computing.
 
 ## Benefits of combining R and Python
+
 Combining R and Python brings together the best of both worlds:
 
-1. Choose the best tool for each task by leveraging R's statistical analysis and Python's programming and machine learning strengths.
-2. Access more libraries and packages from both ecosystems.
-3. Easy transfer of data between R and Python for flexible data handling in complex analysis pipelines.
+1.  Choose the best tool for each task by leveraging R's statistical analysis and Python's programming and machine learning strengths.
+2.  Access more libraries and packages from both ecosystems.
+3.  Easy transfer of data between R and Python for flexible data handling in complex analysis pipelines.
 
 ## Prerequisites and installation
+
 Before using the library, make sure you have the following prerequisites:
 
-1. R Installation: [Install R](https://cran.r-project.org/) on your system.
-2. Python Installation: [Install Python](https://www.python.org/downloads/) on your system.
-3. RStudio (Optional but recommended): Using RStudio as your IDE can simplify the process of using `reticulate`. Download RStudio from [here](https://posit.co/download/rstudio-desktop/).
+1.  R Installation: [Install R](https://cran.r-project.org/) on your system.
+2.  Python Installation: [Install Python](https://www.python.org/downloads/) on your system.
+3.  RStudio (Optional but recommended): Using RStudio as your IDE can simplify the process of using `reticulate`. Download RStudio from [here](https://posit.co/download/rstudio-desktop/).
 
 Once you have completed all the prerequisites, it is time to install the package. Use the following command in your R console:
+
 ```{r}
 if (!require("reticulate")) install.packages("reticulate")
 ```
 
 After installation, load the package using:
+
 ```{r}
 library(reticulate)
 ```
 
-
-
 # Basic Usage
+
 ## Importing Python Modules
+
 To import a Python module in R using the `reticulate` package, you use the `import` function. For example, to import the `numpy` library, you can use:
+
 ```{r}
 np <- import("numpy")
 ```
 
 With this, you can use the `np` object to access `numpy` functions and methods just as you would in Python:
+
 ```{r}
 # Create a numpy array
 array <- np$array(c(1, 2, 3, 4, 5))
@@ -59,19 +67,24 @@ print(array)
 ```
 
 ## Running Python Code in R
+
 Sometimes, it might be useful to execute Python code directly within an R script, and this can be easily done using the `py_run_string` function. This function allows you to run Python code as a string:
+
 ```{r}
 py_run_string("print('Hello from Python')")
 ```
 
 Alternatively, it may be more convenient to directly execute a Python script file. For this, you can use the `py_run_file` function:
+
 ```{r}
 # py_run_file("path/to/your_script.py")
 py_run_file("test.py")
 ```
 
 ## Accessing Python Objects in R
+
 In the same way, you can access and manipulate Python objects in R. For example, if you create a Python list, you can access it in R:
+
 ```{r}
 # You can access a Python list
 py_run_string("my_list = [1, 2, 3, 4, 5]")
@@ -85,6 +98,7 @@ print(my_list)
 ```
 
 It is also possible to define functions and call them from R:
+
 ```{r}
 py_run_string("
 def greet(name):
@@ -96,11 +110,12 @@ print(greet("World"))
 print(greet("James"))
 ```
 
-
-
 # Data Manipulation
+
 ## Using Python Libraries Like NumPy and pandas
+
 You can use Python libraries like NumPy and pandas for data manipulation in R:
+
 ```{r}
 # Import NumPy and pandas
 np <- import("numpy")
@@ -115,12 +130,14 @@ py_df <- pd$DataFrame(dict(a=np$array(c(1, 2, 3)), b=np$array(c('x', 'y', 'z')))
 print(py_df)
 ```
 
-## Converting Data Types Between R and Python   
-It is important to know that the `reticulate` package automatically converts many data types between R and Python. For example, **R vectors become Python lists**, and **R data frames become pandas data frames**. 
+## Converting Data Types Between R and Python
+
+It is important to know that the `reticulate` package automatically converts many data types between R and Python. For example, **R vectors become Python lists**, and **R data frames become pandas data frames**.
 
 You can manually convert data types using specific functions if needed:
 
-1. To convert an R data frame to a pandas data frame:
+1.  To convert an R data frame to a pandas data frame:
+
 ```{r}
 # Define data frame
 df <- data.frame(a = 1:3, b = c('x', 'y', 'z')) 
@@ -130,18 +147,20 @@ py_df <- r_to_py(df)
 print(py_df)
 ```
 
-2. To convert a pandas data frame back to an R data frame:
+2.  To convert a pandas data frame back to an R data frame:
+
 ```{r}
 # Convert pandas data frame to R data frame
 r_df <- py_to_r(py_df)
 print(r_df)
 ```
 
-
-
 # Visualization
+
 ## Using Python Visualization Libraries
+
 Sometimes, you might have more experience plotting in Python than in R. Thanks to this package, Python libraries like Matplotlib and Seaborn can be used:
+
 ```{r}
 # Import libraries
 plt <- import("matplotlib.pyplot")
@@ -160,10 +179,10 @@ sns$scatterplot(data=df, x="sepal_length", y="sepal_width", hue="species")
 plt$show()
 ```
 
-
-
 # Machine Learning
+
 ## Using Scikit-Learn for Classification
+
 ```{r}
 # Import scikit-learn
 sklearn <- import("sklearn")
@@ -187,6 +206,7 @@ print(paste("Accuracy:", accuracy))
 ```
 
 ## Building and Evaluating a Regression Model
+
 ```{r}
 # Import necessary libraries
 sklearn <- import("sklearn")
@@ -217,6 +237,7 @@ print(paste("Mean Squared Error:", mse))
 ```
 
 ## Using TensorFlow for Deep Learning
+
 ```{r}
 # Import TensorFlow and Keras to create and tranii the neural network
 tf <- import("tensorflow")
@@ -256,10 +277,10 @@ test_acc <- metrics[[2]]
 print(paste("Test accuracy:", test_acc))
 ```
 
+# Reinforcement Learning
 
-
-# Reinforcement Learning 
 ## Using OpenAI Gym for Reinforcement Learning
+
 ```{r}
 # Import necessary libraries
 gym <- import("gym")
@@ -314,4 +335,30 @@ ggplot(df, aes(x = episode, y = total_reward)) +
   labs(title = "Total Reward per Episode",
        x = "Episode",
        y = "Total Reward")
+```
+
+# Web Scraping
+
+## Using BeautifulSoup for Web Scraping
+
+```{r}
+# Import BeautifulSoup and requests
+bs4 <- import("bs4")
+requests <- import("requests")
+
+# Fetch webpage content
+url <- "https://www.uc3m.es/Home"
+response <- requests$get(url)
+
+# Parse HTML content
+soup <- bs4$BeautifulSoup(response$content, "html.parser")
+
+# Extract all div elements
+divs <- soup$find_all("div")
+
+# Print the content of the first 10 divs
+for (i in 1:10) {
+  div <- divs[[i]]
+  print(div$get_text())
+}
 ```
